@@ -16,12 +16,20 @@ session = Session(
     region_name=AWS_REGION)
 
 
+def can_zip(root, filename):
+    excluded_extensions = ['.pyc']
+    _, extension = os.path.splitext(filename)
+    if extension in excluded_extensions:
+        return False
+
+
 def files_to_zip(path):
     for root, dirs, files in os.walk(path):
         for f in files:
-            full_path = os.path.join(root, f)
-            archive_name = full_path[len(path) + len(os.sep):]
-            yield full_path, archive_name
+            if can_zip(root=root, filename=f):
+                full_path = os.path.join(root, f)
+                archive_name = full_path[len(path) + len(os.sep):]
+                yield full_path, archive_name
 
 
 def make_zip_file_bytes(path):
