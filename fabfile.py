@@ -21,6 +21,7 @@ def can_zip(root, filename):
     _, extension = os.path.splitext(filename)
     if extension in excluded_extensions:
         return False
+    return True
 
 
 def files_to_zip(path):
